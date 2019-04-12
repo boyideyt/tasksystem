@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>任务管理系统</title>
+    <link rel="stylesheet" type="text/css" href="style/style.css">
+    <script type="text/javascript" src="style/jquery-1.11.3.js"></script>
+    <script src="plugins/angularjs/angular.min.js"></script>
+    <link rel="stylesheet" href="plugins/bootstrap/css/bootstrap.min.css"/>
+    <script type="text/javascript" src="plugins/bootstrap/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="css/homelist.css"/>
+    <link rel="stylesheet" href="css/common/skintheme.css"/>
+
+</head>
+<body>
+<div class="main">
+    <div class="container-fluid">
+        <div class="row">
+
+            <!--左侧-->
+            <div class="col-lg-2 col-md-2 smallDiv"
+                 style="padding: 0; margin: 0; display: block;">
+                <div class="col-md-12 green-g">
+                    <a href="/" class="navbar-brand green-none white" style="padding: 15px 40px;"><span
+                            class="glyphicon glyphicon-home"></span>
+                        &nbsp;&nbsp;&nbsp; 首&nbsp;页
+                    </a>
+                </div>
+                <div class="col-md-12 list-left"
+                     style="background: #222d32; height: 845px">
+
+                    <div class="thistable">
+                        <!--菜单栏-->
+                        <div class="panel-group" id="accordion" style="margin-top: 10px; margin-left: -12px;">
+                            <div class="panel panel-default">
+
+                                <div class="panel-heading">
+                                    <a class="open-menu green-left" href="#user-manager.html"
+                                       onclick="changepath('pages/user-manager.html')" data-toggle="collapse"
+                                       data-parent="#accordion"> <span
+                                            class="glyphicon glyphicon-education"></span> <span>用户管理</span>
+                                    </a>
+                                </div>
+
+                                <div class="panel-heading">
+                                    <a class="open-menu green-left" href="#announcement-manager.html"
+                                       onclick="changepath('pages/announcement-manager.html')" data-toggle="collapse"
+                                       data-parent="#accordion"> <span
+                                            class="glyphicon glyphicon-bell"></span> <span>公告管理</span>
+                                    </a>
+                                </div>
+
+                                <div class="panel-heading">
+                                    <a class="open-menu green-left" href="#task-manager.html"
+                                       onclick="changepath('pages/task-manager.html')" data-toggle="collapse"
+                                       data-parent="#accordion"> <span
+                                            class="glyphicon glyphicon-flag"></span> <span>任务管理</span>
+                                    </a>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--右侧-->
+            <div class="col-md-10 moredeep" style="padding: 0; margin: 0;">
+                <!-- 导航栏 -->
+                <div class="col-md-12 green">
+                    <!--导航栏左侧暂时空白-->
+                    <ul class="nav navbar-nav navbar-left" style="margin-left: -15px;">
+
+                    </ul>
+                    <!--右侧导航栏，身份信息-->
+                    <ul class="nav navbar-nav navbar-right moredeep">
+
+                        <li class="dropdown">
+                            <!--设置导航栏头像面板-->
+                            <a href="#" class="green-none white" a-toggle="dropdown">
+                                <span>罗密欧</span>
+                            </a>
+                            <!--设置点击按钮弹出用户面板层-->
+                            <ul class="dropdown-menu" style="padding:0;">
+                                <li class="user-header green">
+                                    <p class="white" style="">
+                                        <span>总经办 </span> / <span> 超级管理员</span><br>
+                                        <small>超级管理员</small>
+                                    </p>
+                                </li>
+                                <li class="user-footer">
+                                    <div class="pull-left">
+                                        <a href="#" onclick="changepath('pages/user-manager.html')"
+                                           class="btn btn-default">用户面板</a>
+                                    </div>
+                                    <div class="pull-right">
+                                        <a href="loginout" class="btn btn-danger">退出登录</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+
+
+                    </ul>
+                </div>
+                <!--内容区块-->
+                <div class="col-md-12 list-right"
+                     style="background: #ecf0f5; position: relative; height: 845px;padding: 0;">
+                    <!-- 内容主体 -->
+                    <iframe src="pages/home.html" frameBorder="0" width="100%" height="92%"></iframe>
+                    <!-- 底部栏 -->
+                    <div class="col-md-12" id="ss"
+                         style="background: white; padding: 15px; position: absolute; bottom: 0;height:50px;">
+                        <strong> <a href="http://http://www.talenco.com.cn/">北京协英科技顾问有限公司</a>
+                        </strong>
+                        <div class="pull-right currt-time" style="display: inline-block;margin-right: 20px;">
+                            2019年05月01日，星期三
+                        </div>
+                    </div>
+                    <script type="text/javascript">
+
+                        /*通过改变iframe来改变里面的内容块  */
+                        function changepath(path) {
+                            $('iframe').attr('src', path);
+                        }
+
+
+                        $(function () {
+                            /*获取当前时间并显示在底部栏  */
+                            var day = new Date();
+                            var week = new Array("星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六");
+                            s = day.getFullYear() + "年";
+                            s = s + (day.getMonth() + 1) + "月";
+                            s = s + day.getDate() + "日,";
+                            s = s + week[day.getDay()];
+                            console.log(s);
+                            $(".currt-time").text(s);
+
+                            /*更换主题颜色*/
+                            var themeSkin = '${user.themeSkin}';
+                            if (themeSkin == "blue") {
+                                toblue();
+                            } else if (themeSkin == "green") {
+                                togreen();
+                            } else if (themeSkin == "yellow") {
+                                toyellow();
+                            } else if (themeSkin == "red") {
+                                tored();
+                            }
+
+                            //获取右侧内容板的高度；设置面板的高度
+                            if (window.screen.height < 800) {
+                                $('.list-left').height(850);
+                                $('.list-right').height(850);
+                            } else {
+                                $('.list-left').height(window.screen.height - 50);
+                                $('.list-right').height(window.screen.height - 50);
+                            }
+
+                        });
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
