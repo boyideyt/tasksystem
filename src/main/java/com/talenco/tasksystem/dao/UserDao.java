@@ -10,7 +10,7 @@ public interface UserDao {
 
     List<User> getAll();
 
-    User getOne(Long id);
+    User getOne(String userName);
 
     void insert(User user);
 

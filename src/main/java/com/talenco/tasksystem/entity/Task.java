@@ -1,56 +1,30 @@
 package com.talenco.tasksystem.entity;
 
 import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class Task {
     //    任务ID
     private Long taskId;
-    //    项目ID
-    private Long projectID;
-    //    用户ID
-    private Long userID;
-    //    项目步骤描述
-    private List<String> taskStepList;
-    //    项目步骤状态
-    private List<Long> taskStepStatus;
+    //    项目名
+    private String projectName;
+    //    用户名
+    private String userName;
+    //    任务步骤描述
+    private String taskStepList;
+    //    任务步骤状态
+    private String taskStepStatus;
+    //    任务步骤链接
+    private String taskStepLink;
+    //    任务状态
+    private Long taskStatus;
+    //    任务名称
+    private String taskName;
 
-    public Long getTaskId() {
-        return taskId;
-    }
 
-    public void setTaskId(Long taskId) {
-        this.taskId = taskId;
-    }
-
-    public Long getProjectID() {
-        return projectID;
-    }
-
-    public void setProjectID(Long projectID) {
-        this.projectID = projectID;
-    }
-
-    public Long getUserID() {
-        return userID;
-    }
-
-    public void setUserID(Long userID) {
-        this.userID = userID;
-    }
-
-    public List<String> getTaskStepList() {
-        return taskStepList;
-    }
-
-    public void setTaskStepList(List<String> taskStepList) {
-        this.taskStepList = taskStepList;
-    }
-
-    public List<Long> getTaskStepStatus() {
-        return taskStepStatus;
-    }
-
-    public void setTaskStepStatus(List<Long> taskStepStatus) {
-        this.taskStepStatus = taskStepStatus;
-    }
 }

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.talenco.tasksystem.dao.ProjectDao">
+
+    <resultMap id="BaseResultMap" type="com.talenco.tasksystem.entity.Project">
+        <id column="project_id" property="projectId" jdbcType="BIGINT"/>
+        <result column="project_name" property="projectName" jdbcType="VARCHAR"/>
+        <result column="project_description" property="projectDescription" jdbcType="VARCHAR"/>
+        <result column="project_step_num" property="projectStepNum" jdbcType="VARCHAR" />
+        <result column="project_step_list" property="projectStepList" jdbcType="VARCHAR" />
+        <result column="sample_path" property="samplePath" jdbcType="VARCHAR"/>
+        <result column="project_status" property="projectStatus" jdbcType="BIGINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        project_id,
+        project_name,
+        project_description,
+        project_step_num,
+        project_step_list,
+        sample_path,
+        project_status
+    </sql>
+
+    <select id="getAll" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM project
+    </select>
+
+    <select id="getOne" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM project
+        WHERE project_id = #{projectId}
+    </select>
+
+    <insert id="insert" parameterType="com.talenco.tasksystem.entity.Project">
+        INSERT INTO
+            project
+            (project_id,project_name, project_description, project_step_num, project_step_list, sample_path, project_status
+            )
+        VALUES
+            (#{projectId},#{projectName},#{projectDescription},#{projectStepNum},#{projectStepList},#{samplePath},#{projectStatus})
+    </insert>
+
+    <update id="update" parameterType="com.talenco.tasksystem.entity.Project">
+        UPDATE
+            project
+        SET
+        project_name = #{projectName},
+        project_description = #{projectDescription},
+        project_step_num = #{projectStepNum},
+        project_step_list = #{projectStepList},
+        sample_path = #{samplePath},
+        project_status = #{projectStatus}
+        WHERE
+            project_id = #{projectId}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Long">
+        DELETE
+        FROM
+            project
+        WHERE
+            project_id = #{projectId}
+    </delete>
+
+</mapper>

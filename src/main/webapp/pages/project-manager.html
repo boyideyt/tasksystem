@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- 页面meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>通知管理</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport">
+    <link rel="stylesheet" href="../plugins/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="../plugins/adminLTE/css/AdminLTE.css">
+    <link rel="stylesheet" href="../plugins/adminLTE/css/skins/_all-skins.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <script src="../plugins/bootstrap/js/bootstrap.js"></script>
+
+    <script src="../plugins/angularjs/angular.min.js"></script>
+    <script src="../js/controller/projectController.js"></script>
+    <script src="../js/service/projectService.js"></script>
+    <script src="../js/service/taskService.js"></script>
+</head>
+
+
+<body class="hold-transition skin-red sidebar-mini" ng-app="tasksystem" ng-controller="projectController"
+      ng-init="getAll()">
+<!--box-body -->
+<div class="box-header with-border">
+    <h3 class="box-title">项目管理</h3>
+</div>
+<div class="box-body">
+    <!-- 数据表格 -->
+    <div class="table-box">
+
+        <!--工具栏-->
+        <div class="pull-left">
+            <div class="form-group form-inline">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default" title="新建" ng-click="openModel()"><i class="fa fa-trash-o"></i> 新建</button>
+                    <button type="button" class="btn btn-default" title="删除" ng-click="dele()"><i class="fa fa-ban"></i> 删除
+                    </button>
+                    <button type="button" class="btn btn-default" title="刷新" ng-click="reloadList()"><i class="fa fa-refresh"></i> 刷新
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="box-tools pull-right">
+            <div class="has-feedback">
+                项目名称：<input>
+                <button class="btn btn-default">查询</button>
+            </div>
+        </div>
+        <!--工具栏/-->
+
+        <!--数据列表-->
+        <table id="dataList" class="table table-bordered table-striped table-hover dataTable">
+            <thead>
+            <tr>
+                <th class="" style="padding-right:0px">
+                    <input id="selall" type="checkbox" class="icheckbox_square-blue">
+                </th>
+                <th class="sorting_asc">projectId</th>
+                <th class="sorting">projectName</th>
+                <th class="sorting">projectDescription</th>
+                <th class="sorting">projectStatus</th>
+                <th class="sorting">samplePath</th>
+                <th class="sorting">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="entity in list">
+                <td><input type="checkbox" ng-click="updateSelection($event,entity.projectId)"></td>
+                <td>{{entity.projectId}}</td>
+                <td>{{entity.projectName}}</td>
+                <td>{{entity.projectDescription}}</td>
+                <td>{{projectStatusList[entity.projectStatus]}}</td>
+                <td><a class="downloadfile" href="{{entity.samplePath}}" download="filename">
+                    点击下载
+                </a></td>
+                <td>
+                    <input type="button" class="btn btn-success" ng-click="openModel(entity.projectId)" value="修改">
+                    <input type="button" class="btn btn-success" ng-click="searchByProjectName(entity.projectName)" value="项目任务">
+                    <input type="button" class="btn btn-success" ng-click="taskApplication(entity.projectName)" value="任务申请">
+                    <input type="button" class="btn btn-success" ng-click="deleOne(entity.projectId)" value="删除">
+                </td>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- 模态框插件-项目详情页 -->
+<div class="modal fade" id="projectModel">
+    <div class="modal-dialog">
+        <div class="modal-content" style="position:absolute;left: 10px;top: 10px;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="clearModel()"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">项目详情</h4>
+                {{projectStepList}}
+                {{entity}}
+            </div>
+
+            <div class="modal-body">
+                <div class="input-group">
+                    项目名 : <input type="text" ng-model="entity.projectName">
+                </div><!-- /input-group -->
+                <br>
+                <div class="input-group">
+                    项目描述 :
+                    <textarea rows="5" cols="60" ng-model="entity.projectDescription"></textarea>
+                </div><!-- /input-group -->
+                <br>
+                <div class="input-group">
+                     项目模板文件:
+                    <input type="file"  ng-model="entity.samplePath">
+                </div><!-- /input-group -->
+                <br>
+                <div class="input-group">
+                    项目状态 :
+                    <select ng-model="entity.projectStatus">
+                        <option value="0">敬请期待
+                        <option value="1">火热进行中
+                        <option value="2">项目暂停
+                        <option value="3">项目终止
+                    </select>
+                </div><!-- /input-group --> <br>
+                <div id="stepList" class="input-group" ng-repeat="projectStep in projectStepList" >
+                    步骤{{$index+1}} <input type="text" ng-model="projectStep.name"> <input type="button" value="删除该步骤" ng-click="deleStep($index)">
+                </div><!-- /input-group -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" ng-click="addStep()">添加步骤</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clearModel()">关闭</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" id="startCheckBtn" ng-click="save()">确认</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!-- 模态框插件-任务列表显示 -->
+<div class="modal fade" id="taskModel"  >
+    <div class="modal-dialog">
+        <div class="modal-content" style="width: 800px">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="clearModel()"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">项目已有任务</h4>
+            </div>
+
+            <div class="modal-body" >
+                <table class="table table-bordered table-striped table-hover dataTable">
+                    <thead>
+                    <tr>
+                        <th class="sorting_asc">taskId</th>
+                        <th class="sorting">projectName</th>
+                        <th class="sorting">userName</th>
+                        <th class="sorting">taskName</th>
+                        <th class="sorting">taskStepStatus</th>
+                        <th class="sorting">taskStatus</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="entity in taskList">
+                        <td>{{entity.taskId}}</td>
+                        <td>{{entity.projectName}}</td>
+                        <td>{{entity.userName}}</td>
+                        <td>{{entity.taskName}}</td>
+                        <td><progress max="{{2*entity.taskStepStatus.length}}" value="{{sum(entity.taskStepStatus)}}"></progress></td>
+                        <td>{{taskStatusList[entity.taskStatus]}}</td>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+</body>
+
+</html>

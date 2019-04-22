@@ -5,8 +5,8 @@
 
     <resultMap id="BaseResultMap" type="com.talenco.tasksystem.entity.User">
         <id column="user_id" property="userId" jdbcType="BIGINT"/>
-        <result column="user_name" property="userName" jdbcType="VARCHAR"/>
-        <result column="real_name" property="realName" jdbcType="VARCHAR"/>
+        <result column="user_name" property="username" jdbcType="VARCHAR"/>
+        <result column="real_name" property="realname" jdbcType="VARCHAR"/>
         <result column="role" property="role" jdbcType="BIGINT"/>
     </resultMap>
 
@@ -23,11 +23,11 @@
         FROM task_user
     </select>
 
-    <select id="getOne" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <select id="getOne" parameterType="java.lang.String" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
         FROM task_user
-        WHERE user_id = #{userId}
+        WHERE user_name = #{username}
     </select>
 
     <insert id="insert" parameterType="com.talenco.tasksystem.entity.User">
@@ -36,15 +36,16 @@
             (user_id,user_name, real_name, password, role
             )
         VALUES
-            (#{userId},#{userName},#{realName},"123456",#{role})
+            (#{userId},#{username},#{realname},"123456",#{role})
     </insert>
 
     <update id="update" parameterType="com.talenco.tasksystem.entity.User">
         UPDATE
             task_user
         SET
-        user_name = #{userName},
-        real_name = #{realName}
+        user_name = #{username},
+        real_name = #{realname},
+        role = #{role}
         WHERE
         user_id = #{userId}
     </update>

@@ -20,7 +20,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getOne(Long user) {
+        public User getOne(String user) {
         return userDao.getOne(user);
     }
 

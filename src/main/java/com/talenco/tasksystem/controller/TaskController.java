@@ -2,8 +2,11 @@ package com.talenco.tasksystem.controller;
 
 
 import com.alibaba.fastjson.JSONObject;
+import com.talenco.tasksystem.entity.Project;
 import com.talenco.tasksystem.entity.Result;
+import com.talenco.tasksystem.entity.Task;
 import com.talenco.tasksystem.entity.User;
+import com.talenco.tasksystem.service.TaskService;
 import com.talenco.tasksystem.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -12,39 +15,51 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @EnableAutoConfiguration
-@RequestMapping("/UserController")
-public class UserController {
+@RequestMapping("/TaskController")
+public class TaskController {
 
 
     @Autowired
-    private UserService userService;
+    private TaskService taskService;
 
 
     @RequestMapping("/getAll")
     @ResponseBody
-    public List<User> getAll() {
-        return (List<User>) JSONObject.toJSON(this.userService.getAll());
+    public List<Task> getAll() {
+        return (List<Task>) JSONObject.toJSON(this.taskService.getAll());
+    }
+
+    @RequestMapping("/searchByUsername")
+    @ResponseBody
+    public List<Task> searchByUsername(String username) {
+        return (List<Task>) JSONObject.toJSON(this.taskService.searchByUsername(username));
     }
 
 
     @RequestMapping("/getOne")
     @ResponseBody
-    public String getOne(String username) {
-        User u= userService.getOne(username);
-        return JSONObject.toJSONString(u);
+    public String getOne(Long taskId) {
+        Task task= taskService.getOne(taskId);
+        return JSONObject.toJSONString(task);
+    }
+
+    @RequestMapping("/searchByProjectName")
+    @ResponseBody
+    public String searchByProjectName(String projectName) {
+        List<Task> list= taskService.searchByProjectName(projectName);
+        return JSONObject.toJSONString(list);
     }
 
     @RequestMapping("/insert")
     @ResponseBody
-    public Result insert(@RequestBody User user) {
+    public Result insert(@RequestBody Task task) {
         try {
-            userService.insert(user);
+            System.out.println(task);
+            taskService.insert(task);
             return new Result(true, "添加成功");
         } catch (Exception e) {
             e.printStackTrace();
@@ -54,9 +69,9 @@ public class UserController {
 
     @RequestMapping("/update")
     @ResponseBody
-    public Result update(@RequestBody User user) {
+    public Result update(@RequestBody Task task) {
         try {
-            userService.update(user);
+            taskService.update(task);
             return new Result(true, "修改成功");
         } catch (Exception e) {
             e.printStackTrace();
@@ -68,26 +83,11 @@ public class UserController {
     @ResponseBody
     public Result delete(Long[] ids) {
         try {
-            userService.delete(ids);
+            taskService.delete(ids);
             return new Result(true, "删除成功");
         } catch (Exception e) {
             e.printStackTrace();
             return new Result(false, "删除失败");
         }
-    }
-    @RequestMapping("/login")
-    @ResponseBody
-    public void login(@RequestBody User user) {
-        System.out.println(user);
-    }
-
-    @RequestMapping("/name")
-    @ResponseBody
-    public Map name() {
-        System.out.println();
-
-        Map map = new HashMap();
-        map.put("loginName", 0);
-        return map;
     }
 }
