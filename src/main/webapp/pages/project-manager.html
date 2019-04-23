@@ -18,6 +18,8 @@
     <script src="../plugins/angularjs/angular.min.js"></script>
     <script src="../js/controller/projectController.js"></script>
     <script src="../js/service/projectService.js"></script>
+    <script src="../js/service/stepService.js"></script>
+    <script src="../js/service/userService.js"></script>
     <script src="../js/service/taskService.js"></script>
 </head>
 
@@ -79,8 +81,8 @@
                 </a></td>
                 <td>
                     <input type="button" class="btn btn-success" ng-click="openModel(entity.projectId)" value="修改">
-                    <input type="button" class="btn btn-success" ng-click="searchByProjectName(entity.projectName)" value="项目任务">
-                    <input type="button" class="btn btn-success" ng-click="taskApplication(entity.projectName)" value="任务申请">
+                    <input type="button" class="btn btn-success" ng-click="searchByProjectId(entity.projectId)" value="项目任务">
+                    <input type="button" class="btn btn-success" ng-click="taskCreation(entity.projectId,entity.projectName)" value="任务申请">
                     <input type="button" class="btn btn-success" ng-click="deleOne(entity.projectId)" value="删除">
                 </td>
                 </td>
@@ -97,10 +99,9 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="clearModel()"><span aria-hidden="true">&times;</span>
                 </button>
                 <h4 class="modal-title">项目详情</h4>
-                {{projectStepList}}
-                {{entity}}
             </div>
-
+            {{entity}}
+            {{projectStepList}}
             <div class="modal-body">
                 <div class="input-group">
                     项目名 : <input type="text" ng-model="entity.projectName">
@@ -126,7 +127,14 @@
                     </select>
                 </div><!-- /input-group --> <br>
                 <div id="stepList" class="input-group" ng-repeat="projectStep in projectStepList" >
-                    步骤{{$index+1}} <input type="text" ng-model="projectStep.name"> <input type="button" value="删除该步骤" ng-click="deleStep($index)">
+                    步骤{{$index+1}} :
+                    <input type="text" ng-model="projectStep.stepName">
+                    当前审核人 :{{projectStep.checkMan}}
+                    <select ng-model="projectStep.checkMan" ng-repeat="manager in managerList">
+                        <option value="{{manager.username}}">{{manager.username}}</option>
+                    </select>
+
+                    <input type="button" value="删除该步骤" ng-click="deleStep($index)">
                 </div><!-- /input-group -->
             </div>
             <div class="modal-footer">
@@ -173,6 +181,46 @@
                     </tbody>
                 </table>
 
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!-- 模态框插件-任务新建页 -->
+<div class="modal fade" id="newTaskModel">
+    <div class="modal-dialog">
+        <div class="modal-content" style="position:absolute;left: 10px;top: 10px;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="clearModel()"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">新建任务</h4>
+            </div>
+
+            <div class="modal-body">
+                <div class="input-group">
+                    项目名 : {{entity.projectName}}
+                </div><!-- /input-group -->
+                <br>
+                <div class="input-group">
+                    项目描述 : {{entity.projectDescription}}
+                </div><!-- /input-group -->
+                <br>
+                <div class="input-group">
+                    任务名 : <input type="text" ng-model="taskEntity.taskName">
+                </div><!-- /input-group -->
+                <br>
+                <div class="input-group">
+                    用户名 : {{taskEntity.username}}
+                </div><!-- /input-group -->
+                <br>
+                <div class="input-group">
+                    大纲文件:
+                    <input type="file"  ng-model="taskEntity.taskStepLink[0]">
+                </div><!-- /input-group -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clearModel()">关闭</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="submitApplication()">提交</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

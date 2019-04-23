@@ -13,17 +13,21 @@ app.service('taskService',function($http){
         return $http.get('../TaskController/searchByUsername?username='+username);
     }
     // 任务列表
-    this.searchByProjectName=function(projectName){
-        return $http.get('../TaskController/searchByProjectName?projectName='+projectName);
+    this.searchByProjectId=function(projectId){
+        return $http.get('../TaskController/searchByProjectId?projectId='+projectId);
     }
     // 新建任务
     this.insert=function(entity){
-        return $http.get('../TaskController/insert',entity);
+        return $http.post('../TaskController/insert',entity);
     }
-    // 删除用户
+    // 删除任务
     this.dele=function(selectIds){
-        return $http.get('../TaskController/delete?ids='+selectIds);
+        if(confirm("你确认要删除么")) {
+            return $http.get('../TaskController/delete?ids=' + selectIds);
+        }
     }
-    // 更新用户信息
-
+    // 更新任务信息
+    this.update=function(entity){
+        return $http.post('../TaskController/update',entity);
+    }
 })

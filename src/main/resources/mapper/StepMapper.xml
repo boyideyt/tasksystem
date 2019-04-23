@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.talenco.tasksystem.dao.StepDao">
+
+    <resultMap id="BaseResultMap" type="com.talenco.tasksystem.entity.Step">
+        <id column="step_id" property="stepId" jdbcType="BIGINT"/>
+        <result column="step_name" property="stepName" jdbcType="VARCHAR"/>
+        <result column="project_id" property="projectId" jdbcType="BIGINT"/>
+        <result column="step_index" property="stepIndex" jdbcType="BIGINT"/>
+        <result column="check_man" property="checkMan" jdbcType="BIGINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        step_id,
+        step_name,
+        project_id,
+        step_index,
+        check_man
+    </sql>
+
+    <select id="getAll" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM step
+    </select>
+
+    <select id="searchByCheckMan" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM step
+        WHERE check_man = #{checkMan}
+    </select>
+
+    <select id="searchByProjectId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM step
+        WHERE project_id = #{projectId}
+        ORDER BY step_index
+    </select>
+
+    <select id="getOne" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM step
+        WHERE step_id = #{stepId}
+    </select>
+
+    <insert id="insert" parameterType="com.talenco.tasksystem.entity.Step">
+        INSERT INTO
+            step
+            (step_id,step_name, project_id, step_index, check_man)
+        VALUES
+            (#{stepId},#{stepName},#{projectId},#{stepIndex},#{checkMan})
+    </insert>
+
+    <update id="update" parameterType="com.talenco.tasksystem.entity.Step">
+        UPDATE
+            step
+        SET
+            step_name = #{stepName},
+            step_index = #{stepIndex},
+            check_man = #{checkMan}
+        WHERE
+            step_id = #{stepId}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Long">
+        DELETE
+        FROM
+            step
+        WHERE
+            project_id = #{projectId}
+    </delete>
+
+</mapper>

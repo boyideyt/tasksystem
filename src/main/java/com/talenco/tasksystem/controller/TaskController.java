@@ -2,12 +2,12 @@ package com.talenco.tasksystem.controller;
 
 
 import com.alibaba.fastjson.JSONObject;
-import com.talenco.tasksystem.entity.Project;
 import com.talenco.tasksystem.entity.Result;
+import com.talenco.tasksystem.entity.Step;
 import com.talenco.tasksystem.entity.Task;
-import com.talenco.tasksystem.entity.User;
+import com.talenco.tasksystem.service.StepService;
+import com.talenco.tasksystem.service.StepTaskService;
 import com.talenco.tasksystem.service.TaskService;
-import com.talenco.tasksystem.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,6 +25,10 @@ public class TaskController {
 
     @Autowired
     private TaskService taskService;
+    @Autowired
+    private StepTaskService stepTaskService;
+    @Autowired
+    private StepService stepService;
 
 
     @RequestMapping("/getAll")
@@ -47,10 +51,11 @@ public class TaskController {
         return JSONObject.toJSONString(task);
     }
 
-    @RequestMapping("/searchByProjectName")
+    @RequestMapping("/searchByProjectId")
     @ResponseBody
-    public String searchByProjectName(String projectName) {
-        List<Task> list= taskService.searchByProjectName(projectName);
+    public String searchByProjectId(Long projectId) {
+        List<Task> list= taskService.searchByProjectId(projectId);
+        System.out.println("taskList:"+list);
         return JSONObject.toJSONString(list);
     }
 
@@ -59,7 +64,12 @@ public class TaskController {
     public Result insert(@RequestBody Task task) {
         try {
             System.out.println(task);
-            taskService.insert(task);
+            Long taskId = taskService.insert(task);
+            //任务添加成功后需要继续添加步骤到任务中
+            Long projectId = task.getProjectId();
+            List<Step> steps = stepService.searchByProjectId(projectId);
+            System.out.println("taskId为:"+taskId);
+            stepTaskService.insert(steps,taskId);
             return new Result(true, "添加成功");
         } catch (Exception e) {
             e.printStackTrace();

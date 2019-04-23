@@ -7,20 +7,18 @@
         <id column="project_id" property="projectId" jdbcType="BIGINT"/>
         <result column="project_name" property="projectName" jdbcType="VARCHAR"/>
         <result column="project_description" property="projectDescription" jdbcType="VARCHAR"/>
-        <result column="project_step_num" property="projectStepNum" jdbcType="VARCHAR" />
-        <result column="project_step_list" property="projectStepList" jdbcType="VARCHAR" />
         <result column="sample_path" property="samplePath" jdbcType="VARCHAR"/>
         <result column="project_status" property="projectStatus" jdbcType="BIGINT"/>
+        <result column="step_count" property="stepCount" jdbcType="BIGINT"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         project_id,
         project_name,
         project_description,
-        project_step_num,
-        project_step_list,
         sample_path,
-        project_status
+        project_status,
+        step_count
     </sql>
 
     <select id="getAll" resultMap="BaseResultMap">
@@ -37,12 +35,15 @@
     </select>
 
     <insert id="insert" parameterType="com.talenco.tasksystem.entity.Project">
+        <selectKey resultType="java.lang.Long" order="AFTER" keyProperty="projectId">
+            SELECT LAST_INSERT_ID() AS projectId
+        </selectKey>
         INSERT INTO
             project
-            (project_id,project_name, project_description, project_step_num, project_step_list, sample_path, project_status
+            (project_id,project_name, project_description, sample_path, project_status,step_count
             )
         VALUES
-            (#{projectId},#{projectName},#{projectDescription},#{projectStepNum},#{projectStepList},#{samplePath},#{projectStatus})
+            (#{projectId},#{projectName},#{projectDescription},#{samplePath},#{projectStatus},#{stepCount})
     </insert>
 
     <update id="update" parameterType="com.talenco.tasksystem.entity.Project">
@@ -51,10 +52,9 @@
         SET
         project_name = #{projectName},
         project_description = #{projectDescription},
-        project_step_num = #{projectStepNum},
-        project_step_list = #{projectStepList},
         sample_path = #{samplePath},
-        project_status = #{projectStatus}
+        project_status = #{projectStatus},
+        step_count = #{stepCount}
         WHERE
             project_id = #{projectId}
     </update>

@@ -6,8 +6,9 @@ var app = angular.module('tasksystem', [])
 app.controller('taskController',  function($scope, $controller, taskService) {
 
 
-    $scope.taskStatusList=['未完成','审核进行中','全部审核通过','驳回']
-    $scope.taskStepStatusList=['未完成','审核进行中','驳回','审核通过']
+    $scope.taskStatusList=['任务申请中','任务进行中','全部审核通过','驳回'];
+    $scope.taskStepStatusList=['未完成','审核进行中','驳回','审核通过'];
+    $scope.entity=new Object();
     $scope.reloadList = function () {
         $scope.getAll();
     }
@@ -17,7 +18,7 @@ app.controller('taskController',  function($scope, $controller, taskService) {
      */
     // 打开动态弹出框
     $scope.openModel = function (taskId) {
-        $scope.taskStepList = ['请输入任务名称'];
+        $scope.taskStepList = new Array();
         $scope.taskStepStatus = [0];
         var serviceObject;//服务层对象
         if (taskId != null) {//如果有ID
@@ -26,7 +27,7 @@ app.controller('taskController',  function($scope, $controller, taskService) {
                 function (response) {
                     $scope.entity = response;
                     $scope.taskStepList = JSON.parse(response.taskStepList);
-                    $scope.taskStepStatus = JSON.parse(response.taskStepStatus);
+                    // $scope.taskStepStatus = response.taskStepStatus;
                     //返回步骤列表类型为list,需要分行展示在界面
                 }
             );
@@ -40,7 +41,7 @@ app.controller('taskController',  function($scope, $controller, taskService) {
 
     $scope.save = function () {
         var serviceObject;//服务层对象
-        $scope.entity.taskStepList = JSON.stringify($scope.taskStepList);
+        $scope.entity.taskStepList = $scope.taskStepList;
         if ($scope.entity.id != null) {//如果有ID
             serviceObject = taskService.insert($scope.entity); //修改
         } else {
@@ -73,6 +74,8 @@ app.controller('taskController',  function($scope, $controller, taskService) {
             }
         );
     }
+
+
     $scope.deleOne = function (id) {
         ids=[id];
         taskService.dele(ids).success(

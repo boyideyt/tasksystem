@@ -2,7 +2,6 @@ package com.talenco.tasksystem.dao;
 
 
 import com.talenco.tasksystem.entity.Project;
-import com.talenco.tasksystem.entity.User;
 
 import java.util.List;
 
@@ -13,7 +12,7 @@ public interface ProjectDao {
 
     Project getOne(Long projectId);
 
-    void insert(Project project);
+    int insert(Project project);
 
     void update(Project project);
 

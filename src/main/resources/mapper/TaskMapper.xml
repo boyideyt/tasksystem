@@ -5,24 +5,22 @@
 
     <resultMap id="BaseResultMap" type="com.talenco.tasksystem.entity.Task">
         <id column="task_id" property="taskId" jdbcType="BIGINT"/>
-        <result column="project_name" property="projectName" jdbcType="VARCHAR"/>
-        <result column="user_name" property="userName" jdbcType="VARCHAR"/>
-        <result column="task_step_list" property="taskStepList" jdbcType="VARCHAR" />
-        <result column="task_step_status" property="taskStepStatus" jdbcType="VARCHAR" />
-        <result column="task_step_link" property="taskStepLink" jdbcType="VARCHAR" />
-        <result column="task_status" property="taskStatus" jdbcType="BIGINT"/>
         <result column="task_name" property="taskName" jdbcType="VARCHAR"/>
+        <result column="project_id" property="projectId" jdbcType="BIGINT"/>
+        <result column="project_name" property="projectName" jdbcType="VARCHAR"/>
+        <result column="user_name" property="username" jdbcType="VARCHAR"/>
+        <result column="task_status" property="taskStatus" jdbcType="BIGINT"/>
+        <result column="task_step_status" property="taskStepStatus" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         task_id,
+        task_name,
+        project_id,
         project_name,
         user_name,
-        task_step_list,
-        task_step_status,
-        task_step_link,
         task_status,
-        task_name
+        task_step_status
     </sql>
 
     <select id="getAll" resultMap="BaseResultMap">
@@ -38,11 +36,11 @@
         WHERE user_name = #{username}
     </select>
 
-    <select id="searchByProjectName" resultMap="BaseResultMap">
+    <select id="searchByProjectId" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
         FROM task
-        WHERE project_name = #{projectName}
+        WHERE project_id = #{projectId}
     </select>
 
     <select id="getOne" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -53,20 +51,25 @@
     </select>
 
     <insert id="insert" parameterType="com.talenco.tasksystem.entity.Task">
+        <selectKey resultType="java.lang.Long" order="AFTER" keyProperty="taskId">
+            SELECT LAST_INSERT_ID() AS taskId
+        </selectKey>
         INSERT INTO
             task
-            (task_id,user_name, real_name, password, role
+            (task_id,task_name, project_id, project_name, user_name,task_status,task_step_status
             )
         VALUES
-            (#{taskId},#{userName},#{realName},"123456",#{role})
+            (#{taskId},#{taskName},#{projectId},#{projectName},#{username},#{taskStatus},#{taskStepStatus})
     </insert>
 
     <update id="update" parameterType="com.talenco.tasksystem.entity.Task">
         UPDATE
             task
         SET
-        user_name = #{userName},
-        real_name = #{realName}
+            task_name = #{taskName},
+            user_name = #{username},
+            task_status = #{taskStatus},
+            task_step_status = #{taskStepStatus}
         WHERE
             task_id = #{taskId}
     </update>

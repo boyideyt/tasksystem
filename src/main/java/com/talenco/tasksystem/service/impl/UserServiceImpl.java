@@ -20,6 +20,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<User> getManager() {
+        return userDao.getManager();
+    }
+
+    @Override
         public User getOne(String user) {
         return userDao.getOne(user);
     }

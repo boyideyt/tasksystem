@@ -2,7 +2,6 @@ package com.talenco.tasksystem.service.impl;
 
 import com.talenco.tasksystem.dao.TaskDao;
 import com.talenco.tasksystem.entity.Task;
-import com.talenco.tasksystem.entity.User;
 import com.talenco.tasksystem.service.TaskService;
 import org.springframework.stereotype.Service;
 
@@ -26,8 +25,9 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public void insert(Task task) {
+    public Long insert(Task task) {
         taskDao.insert(task);
+        return task.getTaskId();
     }
 
     @Override
@@ -43,8 +43,8 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<Task> searchByProjectName(String projectName) {
-        return taskDao.searchByProjectName(projectName);
+    public List<Task> searchByProjectId(Long projectId) {
+        return taskDao.searchByProjectId(projectId);
     }
 
     @Override

@@ -1,7 +1,10 @@
 package com.talenco.tasksystem.entity;
 
+
 public class Result {
+    //成功还是失败
     private boolean signal;
+    //信息内容
     private String message;
 
     public Result(boolean signal, String message) {

@@ -1,8 +1,8 @@
 package com.talenco.tasksystem.entity;
 
-import java.util.ArrayList;
-
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
@@ -15,12 +15,11 @@ public class Project {
     private String projectName;
     //项目描述,项目总体要求
     private String projectDescription;
-    // 项目步骤数
-    private Long projectStepNum;
-    // 项目步骤描述
-    private String projectStepList;
     // 项目模板路径
     private String samplePath;
     // 项目状态
     private Long projectStatus;
+    // 步骤计数
+    private Long stepCount;
+
 }

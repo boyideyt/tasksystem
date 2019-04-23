@@ -10,6 +10,8 @@ public interface UserDao {
 
     List<User> getAll();
 
+    List<User> getManager();
+
     User getOne(String userName);
 
     void insert(User user);
@@ -17,4 +19,6 @@ public interface UserDao {
     void update(User user);
 
     void delete(Long id);
+
+    User findOne(Long userid);
 }

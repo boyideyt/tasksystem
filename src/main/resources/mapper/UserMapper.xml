@@ -20,19 +20,26 @@
     <select id="getAll" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
-        FROM task_user
+        FROM user
+    </select>
+
+    <select id="getManager" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM user
+        WHERE role = 2
     </select>
 
     <select id="getOne" parameterType="java.lang.String" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
-        FROM task_user
+        FROM user
         WHERE user_name = #{username}
     </select>
 
     <insert id="insert" parameterType="com.talenco.tasksystem.entity.User">
         INSERT INTO
-            task_user
+            user
             (user_id,user_name, real_name, password, role
             )
         VALUES
@@ -41,7 +48,7 @@
 
     <update id="update" parameterType="com.talenco.tasksystem.entity.User">
         UPDATE
-            task_user
+            user
         SET
         user_name = #{username},
         real_name = #{realname},
@@ -53,7 +60,7 @@
     <delete id="delete" parameterType="java.lang.Long">
         DELETE
         FROM
-            task_user
+            user
         WHERE
             user_id = #{userId}
     </delete>

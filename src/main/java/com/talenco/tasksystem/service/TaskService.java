@@ -1,7 +1,6 @@
 package com.talenco.tasksystem.service;
 
 import com.talenco.tasksystem.entity.Task;
-import com.talenco.tasksystem.entity.User;
 
 import java.util.List;
 
@@ -11,13 +10,17 @@ public interface TaskService {
 
     Task getOne(Long id);
 
-    void insert(Task task);
+    Long insert(Task task);
 
     void update(Task task);
 
+    /**
+     * 删除任务
+     * @param ids
+     */
     void delete(Long[] ids);
 
-    List<Task> searchByProjectName(String projectId);
+    List<Task> searchByProjectId(Long projectId);
 
     List<Task> searchByUsername(String username);
 }

@@ -14,7 +14,7 @@ app.service('projectService',function($http){
     }
     // 删除项目
     this.dele=function(selectIds){
-        if(confirm()){
+        if(confirm("你确认要删除么")){
         return $http.get('../ProjectController/delete?ids='+selectIds);
         }
     }

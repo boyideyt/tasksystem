@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.talenco.tasksystem.dao.StepTaskDao">
+
+    <resultMap id="BaseResultMap" type="com.talenco.tasksystem.entity.StepTask">
+        <id column="step_task_id" property="stepTaskId" jdbcType="BIGINT"/>
+        <result column="step_id" property="stepId" jdbcType="BIGINT"/>
+        <result column="task_id" property="taskId" jdbcType="BIGINT"/>
+        <result column="task_name" property="taskName" jdbcType="VARCHAR"/>
+        <result column="step_link" property="stepLink" jdbcType="VARCHAR"/>
+        <result column="step_status" property="stepStatus" jdbcType="BIGINT"/>
+        <result column="step_index" property="stepIndex" jdbcType="BIGINT"/>
+        <result column="username" property="username" jdbcType="VARCHAR"/>
+        <result column="update_time" property="updateTime" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        step_task_id,
+        step_id,
+        step_name,
+        task_id,
+        step_link,
+        step_status,
+        step_index,
+        username,
+        update_time
+    </sql>
+
+    <select id="getAll" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM step_task
+    </select>
+
+    <select id="searchByUsername" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM step_task
+        WHERE user_name = #{username}
+    </select>
+
+    <select id="searchByTaskId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM step_task
+        WHERE task_id = #{taskId}
+    </select>
+
+    <select id="getOne" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM step_task
+        WHERE step_task_id = #{stepTaskId}
+    </select>
+
+    <insert id="insert" parameterType="com.talenco.tasksystem.entity.StepTask">
+        INSERT INTO
+            step_task
+            (step_task_id,
+             step_id,
+             step_name,
+             task_id,
+             step_link,
+             step_status,
+             step_index
+            )
+        VALUES
+            (#{stepTaskId},#{stepId},#{stepName},#{taskId},#{stepLink},#{stepStatus},#{stepIndex})
+    </insert>
+
+    <update id="update" parameterType="com.talenco.tasksystem.entity.StepTask">
+        UPDATE
+            step_link,
+            step_status,
+            username,
+        SET
+            step_link = #{stepLink},
+            step_status = #{stepStatus}
+            step_status = #{username}
+        WHERE
+            step_task_id = #{stepTaskId}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Long">
+        DELETE
+        FROM
+            step_task
+        WHERE
+            step_task_id = #{stepTaskId}
+    </delete>
+
+</mapper>

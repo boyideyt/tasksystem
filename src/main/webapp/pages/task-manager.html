@@ -124,8 +124,8 @@
                     </thead>
                     <tbody>
                     <tr ng-repeat="taskStep in taskStepList">
-                        <td>{{taskStep}}</td>
-                        <td>{{taskStepStatusList[(taskStepStatus[$index])]}}</td>
+                        <td>{{taskStep.name}}</td>
+                        <td>{{taskStepStatusList[taskStep.status]}}</td>
                         <td>
                             <input type="button" value="完成" parm="1" ng-click="changeStatus(this.parm,$index)">
                             <input type="button" value="驳回" parm="2" ng-click="changeStatus(this,$index)">

@@ -11,9 +11,13 @@ public interface ProjectService {
 
     Project getOne(Long id);
 
-    void insert(Project project);
+    Long insert(Project project);
 
     void update(Project project);
 
+    /**
+     * 在删除项目时,删除项目下的步骤step,该功能不影响主要供能,可后续完成
+     * @param ids 项目id数组
+     */
     void delete(Long[] ids);
 }
